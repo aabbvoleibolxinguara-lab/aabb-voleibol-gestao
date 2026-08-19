@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="theme-color" content="#052c54">
+  <title>AABB Voleibol • Gestão Esportiva</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="toast" class="toast"></div>
+
+  <section id="loginScreen" class="login-screen">
+    <div class="login-brand">
+      <div class="brand-glow"></div>
+      <img src="logo-aabb.jpeg" alt="AABB Voleibol" class="login-logo">
+      <div>
+        <span class="eyebrow light">GESTÃO ESPORTIVA</span>
+        <h1>Uma escolinha organizada<br>em um só lugar.</h1>
+        <p>Matrículas, frequência, mensalidades, uniformes, documentos e acompanhamento dos atletas.</p>
+      </div>
+      <div class="login-highlights">
+        <span>✓ Plataforma personalizada</span>
+        <span>✓ Preparada para Google Drive</span>
+        <span>✓ Responsiva para celular e computador</span>
+      </div>
+    </div>
+
+    <div class="login-panel">
+      <form id="loginForm" class="login-card">
+        <div class="mobile-logo-wrap"><img src="logo-aabb.jpeg" alt="AABB Voleibol"></div>
+        <span class="eyebrow">ÁREA RESTRITA</span>
+        <h2>Bem-vindo</h2>
+        <p class="muted"><span id="loginHelpText">Entre com seu usuário para acessar o sistema.</span></p>
+
+        <label>E-mail
+          <input id="loginEmail" type="email" value="aabbvoleibolxinguara@gmail.com" required>
+        </label>
+        <label>Senha
+          <div class="password-row">
+            <input id="loginPassword" type="password" value="Demo@2026" required>
+            <button type="button" id="togglePassword" class="icon-button" title="Mostrar senha">◉</button>
+          </div>
+        </label>
+        <button type="submit" class="btn primary full">Entrar no sistema</button>
+        <div class="demo-access" id="demoAccessBox">
+          <strong>Acesso de demonstração</strong>
+          <span>aabbvoleibolxinguara@gmail.com</span>
+          <span>Senha: Demo@2026</span>
+        </div>
+        <div class="connection-indicator" id="connectionIndicator">
+          <span class="connection-dot"></span>
+          <span id="connectionText">Verificando conexão...</span>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <div id="app" class="app hidden">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <img src="logo-aabb.jpeg" alt="AABB Voleibol">
+        <div><strong>AABB</strong><span>VOLEIBOL</span></div>
+      </div>
+
+      <nav id="mainNav">
+        <button class="nav-item active" data-page="dashboard"><span>⌂</span> Visão geral</button>
+        <button class="nav-item" data-page="athletes"><span>♙</span> Atletas</button>
+        <button class="nav-item" data-page="enrollment"><span>＋</span> Nova matrícula</button>
+        <button class="nav-item" data-page="attendance"><span>✓</span> Frequência</button>
+        <button class="nav-item" data-page="finance"><span>R$</span> Financeiro</button>
+        <button class="nav-item" data-page="uniforms"><span>▣</span> Uniformes</button>
+        <button class="nav-item" data-page="documents"><span>▤</span> Documentos</button>
+        <button class="nav-item" data-page="media"><span>◫</span> Fotos e vídeos</button>
+        <button class="nav-item" data-page="reports"><span>▥</span> Relatórios</button>
+        <button class="nav-item" data-page="settings"><span>⚙</span> Configurações</button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-mini">
+          <div class="avatar" id="userAvatar">AD</div>
+          <div><strong id="userName">Administrador</strong><span id="userRole">Acesso total</span></div>
+        </div>
+        <button id="logoutBtn" class="btn ghost full">Sair</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button id="menuBtn" class="menu-btn">☰</button>
+        <div>
+          <span class="eyebrow">AABB VOLEIBOL</span>
+          <h2 id="pageTitle">Visão geral</h2>
+        </div>
+        <div class="top-actions">
+          <div class="date-pill" id="currentDate"></div>
+          <button class="notification-btn">🔔<span>3</span></button>
+        </div>
+      </header>
+
+      <section class="content">
+        <div class="page active" id="page-dashboard">
+          <div class="hero-card">
+            <div>
+              <span class="hero-tag" id="seasonTag">TEMPORADA 2026</span>
+              <h1>Gestão completa da<br>AABB Voleibol</h1>
+              <p>Acompanhe atletas, treinos e finanças com clareza.</p>
+              <button class="btn light" data-go="enrollment">Cadastrar novo atleta</button>
+            </div>
+            <div class="hero-ball">🏐</div>
+          </div>
+
+          <div class="stats-grid">
+            <article class="stat-card"><div class="stat-icon blue">♙</div><div><span>Atletas ativos</span><strong id="statAthletes">0</strong><small>matriculados</small></div></article>
+            <article class="stat-card"><div class="stat-icon green">✓</div><div><span>Frequência média</span><strong id="statAttendance">0%</strong><small>últimos registros</small></div></article>
+            <article class="stat-card"><div class="stat-icon yellow">R$</div><div><span>Recebido no mês</span><strong id="statReceived">R$ 0</strong><small>mensalidades pagas</small></div></article>
+            <article class="stat-card"><div class="stat-icon red">!</div><div><span>Mensalidades vencidas</span><strong id="statOverdue">0</strong><small>precisam de atenção</small></div></article>
+          </div>
+
+          <div class="dashboard-grid">
+            <article class="panel">
+              <div class="panel-head"><div><span class="eyebrow">FINANCEIRO</span><h3>Resumo de mensalidades</h3></div><button class="link-btn" data-go="finance">Ver financeiro →</button></div>
+              <div class="finance-summary">
+                <div class="donut" id="financeDonut"><div><strong id="donutPercent">0%</strong><span>recebido</span></div></div>
+                <div class="legend-list">
+                  <div><i class="dot paid"></i><span>Pagas</span><strong id="legendPaid">0</strong></div>
+                  <div><i class="dot pending"></i><span>Pendentes</span><strong id="legendPending">0</strong></div>
+                  <div><i class="dot overdue"></i><span>Vencidas</span><strong id="legendOverdue">0</strong></div>
+                </div>
+              </div>
+            </article>
+
+            <article class="panel">
+              <div class="panel-head"><div><span class="eyebrow">AGENDA</span><h3>Próximas atividades</h3></div></div>
+              <div class="activity-list" id="activityList">
+                <div class="activity"><div class="date-box"><strong>24</strong><span>JUL</span></div><div><strong>Treino Sub-15</strong><span>18:00 • Ginásio AABB</span></div><em>Treino</em></div>
+                <div class="activity"><div class="date-box"><strong>26</strong><span>JUL</span></div><div><strong>Amistoso regional</strong><span>09:00 • Ginásio Municipal</span></div><em>Jogo</em></div>
+                <div class="activity"><div class="date-box"><strong>30</strong><span>JUL</span></div><div><strong>Reunião com responsáveis</strong><span>19:00 • Sala de reuniões</span></div><em>Reunião</em></div>
+              </div>
+            </article>
+
+            <article class="panel wide">
+              <div class="panel-head"><div><span class="eyebrow">ATLETAS</span><h3>Cadastros recentes</h3></div><button class="link-btn" data-go="athletes">Ver todos →</button></div>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>Atleta</th><th>Categoria</th><th>Responsável</th><th>Mensalidade</th><th>Situação</th></tr></thead>
+                  <tbody id="recentAthletes"></tbody>
+                </table>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <div class="page" id="page-athletes">
+          <div class="page-actions">
+            <div><span class="eyebrow">CADASTROS</span><h3>Atletas matriculados</h3><p class="muted">Consulte, edite e acompanhe todos os atletas.</p></div>
+            <button class="btn primary" data-go="enrollment">＋ Nova matrícula</button>
+          </div>
+          <div class="filter-bar">
+            <input id="athleteSearch" placeholder="Pesquisar por atleta ou responsável...">
+            <select id="categoryFilter"><option value="">Todas as categorias</option><option>Sub-11</option><option>Sub-13</option><option>Sub-15</option><option>Sub-17</option><option>Adulto</option></select>
+            <select id="statusFilter"><option value="">Todas as situações</option><option value="Ativo">Ativo</option><option value="Pendente">Pendente</option><option value="Inativo">Inativo</option></select>
+          </div>
+          <div class="panel">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Atleta</th><th>Idade</th><th>Categoria</th><th>Responsável</th><th>Uniforme</th><th>Situação</th><th></th></tr></thead>
+                <tbody id="athletesTable"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="page" id="page-enrollment">
+          <div class="page-actions">
+            <div><span class="eyebrow">MATRÍCULA DIGITAL</span><h3>Novo atleta</h3><p class="muted">Preencha os dados do atleta e do responsável.</p></div>
+          </div>
+          <form id="enrollmentForm" class="form-layout">
+            <div class="panel form-section">
+              <div class="section-title"><span>1</span><div><h3>Dados do atleta</h3><p>Informações pessoais e esportivas.</p></div></div>
+              <div class="form-grid three">
+                <label class="span-2">Nome completo*<input name="name" required></label>
+                <label>Data de nascimento*<input name="birth" type="date" required></label>
+                <label>CPF/documento<input name="document"></label>
+                <label>Sexo<select name="sex"><option>Feminino</option><option>Masculino</option><option>Outro</option></select></label>
+                <label>Categoria*<select name="category" required><option>Sub-11</option><option>Sub-13</option><option>Sub-15</option><option>Sub-17</option><option>Adulto</option></select></label>
+                <label>Posição<select name="position"><option>Em definição</option><option>Levantador(a)</option><option>Ponteiro(a)</option><option>Central</option><option>Oposto(a)</option><option>Líbero</option></select></label>
+                <label>Tamanho da camisa<select name="shirt"><option>8</option><option>10</option><option>12</option><option>14</option><option>PP</option><option>P</option><option>M</option><option>G</option><option>GG</option></select></label>
+                <label>Número preferido<input name="number" type="number" min="1" max="99"></label>
+                <label class="span-3">Endereço<input name="address"></label>
+              </div>
+            </div>
+
+            <div class="panel form-section">
+              <div class="section-title"><span>2</span><div><h3>Responsável</h3><p>Contato principal e responsável financeiro.</p></div></div>
+              <div class="form-grid three">
+                <label class="span-2">Nome do responsável*<input name="guardian" required></label>
+                <label>Parentesco<select name="relation"><option>Mãe</option><option>Pai</option><option>Avó/Avô</option><option>Tutor(a)</option><option>Outro</option></select></label>
+                <label>WhatsApp*<input name="phone" required placeholder="(00) 00000-0000"></label>
+                <label>E-mail<input name="email" type="email"></label>
+                <label>CPF<input name="guardianDocument"></label>
+              </div>
+            </div>
+
+            <div class="panel form-section">
+              <div class="section-title"><span>3</span><div><h3>Anamnese e saúde</h3><p>Informações importantes para a prática esportiva.</p></div></div>
+              <div class="form-grid two">
+                <label>Possui condição de saúde?<textarea name="health" placeholder="Descreva ou informe “Não”"></textarea></label>
+                <label>Alergias ou medicamentos?<textarea name="allergies" placeholder="Descreva ou informe “Não”"></textarea></label>
+                <label>Lesões anteriores?<textarea name="injuries" placeholder="Descreva ou informe “Não”"></textarea></label>
+                <label>Contato de emergência<input name="emergency"></label>
+              </div>
+            </div>
+
+            <div class="panel form-section">
+              <div class="section-title"><span>4</span><div><h3>Financeiro e autorizações</h3><p>Defina a mensalidade e os termos.</p></div></div>
+              <div class="form-grid three">
+                <label>Valor da mensalidade*<input name="monthly" type="number" value="120" min="0" step="0.01" required></label>
+                <label>Dia do vencimento<select name="dueDay"><option>5</option><option>10</option><option>15</option><option>20</option></select></label>
+                <label>Condição<select name="discount"><option>Valor integral</option><option>Bolsa parcial</option><option>Bolsa integral</option><option>Desconto para irmãos</option></select></label>
+              </div>
+              <div class="checks">
+                <label><input type="checkbox" name="imageAuth" required> Autorizo o uso de imagem em atividades institucionais.</label>
+                <label><input type="checkbox" name="rulesAuth" required> Declaro que li e aceito o regimento interno.</label>
+                <label><input type="checkbox" name="healthAuth" required> Confirmo a veracidade das informações de saúde.</label>
+              </div>
+              <div class="form-actions">
+                <button type="reset" class="btn ghost">Limpar</button>
+                <button type="submit" class="btn primary">Salvar matrícula</button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="page" id="page-attendance">
+          <div class="page-actions">
+            <div>
+              <span class="eyebrow">GESTÃO DE TREINOS</span>
+              <h3>Frequência da escolinha</h3>
+              <p class="muted">Controle por turma, data e atleta, mantendo o histórico mensal.</p>
+            </div>
+            <div class="button-group">
+              <button id="attendanceReportBtn" class="btn ghost">Relatório mensal</button>
+              <button id="saveAttendance" class="btn primary">Salvar frequência</button>
+            </div>
+          </div>
+
+          <div class="attendance-kpis">
+            <article class="attendance-kpi present">
+              <span>Presentes</span><strong id="attPresentCount">0</strong><small>no treino selecionado</small>
+            </article>
+            <article class="attendance-kpi absent">
+              <span>Faltas</span><strong id="attAbsentCount">0</strong><small>no treino selecionado</small>
+            </article>
+            <article class="attendance-kpi justified">
+              <span>Justificadas</span><strong id="attJustifiedCount">0</strong><small>no treino selecionado</small>
+            </article>
+            <article class="attendance-kpi total">
+              <span>Atletas da turma</span><strong id="attTotalCount">0</strong><small>matriculados e ativos</small>
+            </article>
+          </div>
+
+          <div class="panel attendance-toolbar">
+            <label>Turma
+              <select id="attendanceCategory">
+                <option>Sub-11</option><option>Sub-13</option><option selected>Sub-15</option>
+                <option>Sub-17</option><option>Adulto</option>
+              </select>
+            </label>
+            <label>Data do treino
+              <input id="attendanceDate" type="date">
+            </label>
+            <div class="attendance-quick-info">
+              <span class="eyebrow">LANÇAMENTO RÁPIDO</span>
+              <strong>Toque na situação de cada atleta</strong>
+              <small>Presente, falta ou falta justificada.</small>
+            </div>
+          </div>
+
+          <div class="panel frequency-panel">
+            <div class="panel-head">
+              <div><span class="eyebrow">LISTA DA TURMA</span><h3>Registro de presença</h3></div>
+              <span class="badge info" id="attendanceStatusLabel">Não salvo</span>
+            </div>
+            <div id="attendanceList" class="attendance-list management-style"></div>
+          </div>
+
+          <div class="panel attendance-history-panel">
+            <div class="panel-head">
+              <div><span class="eyebrow">ACOMPANHAMENTO</span><h3>Resumo mensal por atleta</h3></div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Atleta</th><th>Treinos</th><th>Presenças</th><th>Faltas</th><th>Justificadas</th><th>Frequência</th></tr></thead>
+                <tbody id="attendanceHistory"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        
+        <div class="page" id="page-finance">
+          <div class="page-actions">
+            <div>
+              <span class="eyebrow">GESTÃO FINANCEIRA</span>
+              <h3>Financeiro da escolinha</h3>
+              <p class="muted">Mensalidades, despesas, livro caixa e relatório mensal.</p>
+            </div>
+            <div class="button-group">
+              <button id="newExpenseBtn" class="btn ghost">＋ Nova despesa</button>
+              <button id="generateMonthBtn" class="btn primary">＋ Gerar mensalidades</button>
+            </div>
+          </div>
+
+          <div class="panel finance-toolbar">
+            <label>Mês de referência
+              <input id="financeMonth" type="month">
+            </label>
+            <label>Pesquisar
+              <input id="financeSearch" placeholder="Nome do atleta...">
+            </label>
+            <label>Situação
+              <select id="financeStatus">
+                <option value="">Todas</option><option>Pago</option><option>Pendente</option>
+                <option>Vencido</option><option>Isento</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="finance-kpis">
+            <article class="finance-kpi received"><span>Recebido</span><strong id="finReceived">R$ 0</strong><small>mensalidades pagas</small></article>
+            <article class="finance-kpi pending"><span>A receber</span><strong id="finPending">R$ 0</strong><small>pendente + vencido</small></article>
+            <article class="finance-kpi overdue"><span>Inadimplentes</span><strong id="finOverdueCount">0</strong><small>mensalidades vencidas</small></article>
+            <article class="finance-kpi expense"><span>Despesas</span><strong id="finExpenses">R$ 0</strong><small>pagas no mês</small></article>
+            <article class="finance-kpi balance"><span>Saldo do mês</span><strong id="finBalance">R$ 0</strong><small>receitas menos despesas</small></article>
+          </div>
+
+          <div class="finance-tabs">
+            <button class="finance-tab active" data-fin-tab="receivable">Contas a receber</button>
+            <button class="finance-tab" data-fin-tab="payable">Contas a pagar</button>
+            <button class="finance-tab" data-fin-tab="cashbook">Livro caixa</button>
+            <button class="finance-tab" data-fin-tab="monthly">Relatório mensal</button>
+          </div>
+
+          <div class="finance-section active" id="fin-receivable">
+            <div class="panel">
+              <div class="panel-head">
+                <div><span class="eyebrow">MENSALIDADES</span><h3>Contas a receber</h3></div>
+                <span class="muted compact" id="receivableCount"></span>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>Atleta</th><th>Referência</th><th>Vencimento</th><th>Valor</th><th>Situação</th><th>Ações</th></tr></thead>
+                  <tbody id="financeTable"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="finance-section" id="fin-payable">
+            <div class="panel">
+              <div class="panel-head">
+                <div><span class="eyebrow">DESPESAS</span><h3>Contas a pagar</h3></div>
+                <button class="link-btn" id="newExpenseInline">Adicionar despesa →</button>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>Descrição</th><th>Categoria</th><th>Vencimento</th><th>Valor</th><th>Situação</th><th>Ações</th></tr></thead>
+                  <tbody id="expensesTable"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="finance-section" id="fin-cashbook">
+            <div class="panel">
+              <div class="panel-head">
+                <div><span class="eyebrow">MOVIMENTAÇÕES</span><h3>Livro caixa</h3></div>
+                <span class="badge info">Entradas e saídas confirmadas</span>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>Data</th><th>Descrição</th><th>Tipo</th><th>Forma</th><th>Valor</th></tr></thead>
+                  <tbody id="cashbookTable"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="finance-section" id="fin-monthly">
+            <div class="monthly-report-grid">
+              <article class="panel monthly-highlight">
+                <span class="eyebrow">RESULTADO DO MÊS</span>
+                <h3 id="monthlyResult">R$ 0</h3>
+                <p>Saldo entre os recebimentos confirmados e as despesas pagas.</p>
+              </article>
+              <article class="panel">
+                <span class="eyebrow">RESUMO</span>
+                <div class="monthly-lines">
+                  <div><span>Previsto em mensalidades</span><strong id="monthlyExpected">R$ 0</strong></div>
+                  <div><span>Recebido</span><strong id="monthlyReceived">R$ 0</strong></div>
+                  <div><span>Em aberto</span><strong id="monthlyOpen">R$ 0</strong></div>
+                  <div><span>Despesas pagas</span><strong id="monthlyExpenses">R$ 0</strong></div>
+                </div>
+              </article>
+            </div>
+            <div class="panel">
+              <div class="panel-head">
+                <div><span class="eyebrow">INADIMPLÊNCIA</span><h3>Mensalidades em aberto</h3></div>
+                <button class="link-btn" id="exportFinanceReport">Gerar relatório →</button>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>Atleta</th><th>Responsável</th><th>Contato</th><th>Valor</th><th>Situação</th></tr></thead>
+                  <tbody id="monthlyOpenTable"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="page" id="page-uniforms">
+          <div class="page-actions"><div><span class="eyebrow">MATERIAIS</span><h3>Uniformes</h3><p class="muted">Controle tamanhos, números e entregas.</p></div></div>
+          <div class="stats-grid small" id="uniformStats"></div>
+          <div class="panel"><div class="table-wrap"><table><thead><tr><th>Atleta</th><th>Camisa</th><th>Número</th><th>Kit</th><th>Entrega</th><th>Ação</th></tr></thead><tbody id="uniformTable"></tbody></table></div></div>
+        </div>
+
+        <div class="page" id="page-documents">
+          <div class="page-actions"><div><span class="eyebrow">BIBLIOTECA</span><h3>Documentos do clube</h3><p class="muted">Regimento, autorizações, comunicados e modelos.</p></div><button class="btn primary" id="newDocBtn">＋ Novo documento</button></div>
+          <div id="documentsGrid" class="documents-grid"></div>
+          <div class="panel integration-note">
+            <div class="drive-icon">△</div>
+            <div><h3>Integração com Google Drive</h3><p>Os documentos são enviados para o Google Drive institucional e consultados com autorização pelo sistema.</p></div>
+            <span class="badge info" id="driveStatusBadge">Google Drive</span>
+          </div>
+        </div>
+
+        <div class="page" id="page-media">
+          <div class="page-actions"><div><span class="eyebrow">MEMÓRIAS DA EQUIPE</span><h3>Fotos e vídeos</h3><p class="muted">Organize registros de treinos, jogos e competições.</p></div><button class="btn primary" id="newAlbumBtn">＋ Novo álbum</button></div>
+          <div class="media-grid" id="mediaGrid"></div>
+          <div class="panel integration-note"><div class="drive-icon">▶</div><div><h3>Armazenamento recomendado</h3><p>Fotos no Google Drive e vídeos no YouTube não listado. O sistema guarda e exibe os links dentro da plataforma.</p></div></div>
+        </div>
+
+        <div class="page" id="page-reports">
+          <div class="page-actions"><div><span class="eyebrow">GESTÃO</span><h3>Relatórios</h3><p class="muted">Escolha um relatório para visualizar ou exportar.</p></div></div>
+          <div class="reports-grid">
+            <button class="report-card" data-report="Atletas ativos"><span>♙</span><strong>Atletas ativos</strong><small>Cadastros por categoria e idade</small></button>
+            <button class="report-card" data-report="Frequência mensal"><span>✓</span><strong>Frequência mensal</strong><small>Presenças, faltas e justificativas</small></button>
+            <button class="report-card" data-report="Mensalidades"><span>R$</span><strong>Mensalidades</strong><small>Pagas, pendentes e vencidas</small></button>
+            <button class="report-card" data-report="Uniformes"><span>▣</span><strong>Uniformes</strong><small>Tamanhos, estoque e entregas</small></button>
+            <button class="report-card" data-report="Anamnese"><span>♡</span><strong>Anamnese</strong><small>Alertas e restrições de saúde</small></button>
+            <button class="report-card" data-report="Documentos"><span>▤</span><strong>Documentos</strong><small>Pendências por atleta</small></button>
+          </div>
+          <div id="reportResult" class="panel hidden"></div>
+        </div>
+
+        <div class="page" id="page-settings">
+          <div class="page-actions"><div><span class="eyebrow">ADMINISTRAÇÃO</span><h3>Configurações</h3><p class="muted">Dados da escolinha e estrutura de integração.</p></div></div>
+          <div class="settings-grid">
+            <div class="panel form-section">
+              <h3>Dados institucionais</h3>
+              <div class="form-grid two">
+                <label>Nome da instituição<input id="settingName" value="AABB Voleibol"></label>
+                <label>E-mail institucional<input id="settingEmail" value="aabbvoleibolxinguara@gmail.com"></label>
+                <label>WhatsApp<input id="settingPhone" placeholder="(94) 99999-9999"></label>
+                <label>Responsável técnico<input id="settingTechnical" placeholder="Coordenação AABB"></label>
+                <label>Mensalidade padrão<input id="settingMonthly" type="number" step="0.01" value="120"></label>
+                <label>Dia padrão de vencimento<input id="settingDueDay" type="number" min="1" max="28" value="10"></label>
+              </div>
+              <button class="btn primary" id="saveSettings">Salvar alterações</button>
+            </div>
+            <div class="panel">
+              <h3>Estrutura tecnológica</h3>
+              <div class="tech-list">
+                <div><span>✓</span><div><strong>Interface personalizada</strong><small>GitHub Pages e domínio próprio</small></div></div>
+                <div><span>✓</span><div><strong>Google Sheets</strong><small>Banco de dados administrativo</small></div></div>
+                <div><span>✓</span><div><strong>Google Drive</strong><small>Documentos e comprovantes</small></div></div>
+                <div><span>✓</span><div><strong>Google Apps Script</strong><small>Login, regras e integração</small></div></div>
+                <div><span>✓</span><div><strong>Sem Supabase</strong><small>Estrutura baseada no ecossistema Google</small></div></div>
+              </div>
+              <div class="system-status-box">
+                <span class="eyebrow">CONEXÃO</span>
+                <strong id="systemModeText">Carregando...</strong>
+                <small id="systemApiText"></small>
+              </div>
+            </div>
+          </div>
+          <div class="panel users-panel" id="usersPanel">
+            <div class="panel-head">
+              <div><span class="eyebrow">ACESSOS</span><h3>Usuários do sistema</h3></div>
+              <button class="btn primary" id="newUserBtn">＋ Novo usuário</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Usuário</th><th>E-mail</th><th>Perfil</th><th>Status</th><th>Último acesso</th><th>Ações</th></tr></thead>
+                <tbody id="usersTable"></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="panel danger-zone" id="demoResetPanel">
+            <div><h3>Dados da demonstração</h3><p>Restaure os cadastros fictícios para repetir os testes locais.</p></div>
+            <button class="btn danger" id="resetDemo">Restaurar demonstração</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="loadingOverlay" class="loading-overlay hidden">
+    <div class="loading-card"><div class="spinner"></div><strong id="loadingText">Carregando...</strong></div>
+  </div>
+
+  <div id="modal" class="modal hidden">
+    <div class="modal-card">
+      <button id="modalClose" class="modal-close">×</button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="utils.js"></script>
+  <script src="mock-api.js"></script>
+  <script src="api.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

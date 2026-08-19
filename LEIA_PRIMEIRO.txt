@@ -1,0 +1,68 @@
+AABB VOLEIBOL - ARQUIVOS PRONTOS PARA O GITHUB
+
+DOMINIO DO SISTEMA
+https://gestao.aabbvoleibol.com.br
+
+CONTA GOOGLE DO PROJETO
+aabbvoleibolxinguara@gmail.com
+
+IMPORTANTE
+Este pacote foi reorganizado SEM PASTAS. Todos os arquivos do site ficam no mesmo nivel, prontos para selecao e envio pelo navegador do GitHub.
+
+ARQUIVOS QUE DEVEM SER ENVIADOS AO REPOSITORIO
+- index.html
+- styles.css
+- config.js
+- utils.js
+- mock-api.js
+- api.js
+- app.js
+- logo-aabb.jpeg
+- CNAME
+
+NAO ENVIE O ARQUIVO ZIP PARA PUBLICAR O SITE.
+Extraia o ZIP primeiro e envie os arquivos listados acima.
+
+PASSO A PASSO NO GITHUB
+1. Abra o repositorio aabb-voleibol-gestao.
+2. Clique em Add file.
+3. Clique em Upload files.
+4. Selecione todos os arquivos listados acima de uma vez.
+5. Aguarde o carregamento.
+6. Em Commit changes, use a mensagem: Publicacao inicial do sistema AABB Voleibol.
+7. Clique em Commit changes.
+8. Entre em Settings > Pages.
+9. Em Source, selecione Deploy from a branch.
+10. Em Branch, selecione main e /(root).
+11. Clique em Save.
+
+CONFIGURACAO DO APPS SCRIPT
+Antes de colocar o sistema em uso real, abra config.js e altere:
+
+demoMode: true
+
+para:
+
+demoMode: false
+
+Depois substitua:
+
+apiUrl: "COLE_AQUI_A_URL_DO_WEB_APP_APPS_SCRIPT"
+
+pela URL real do Apps Script terminada em /exec.
+
+Exemplo:
+apiUrl: "https://script.google.com/macros/s/SEU_ID_REAL/exec"
+
+Enquanto demoMode estiver true, o sistema abre em modo de demonstracao e os dados ficam apenas no navegador.
+
+DOMINIO PERSONALIZADO
+O arquivo CNAME ja contem:
+gestao.aabbvoleibol.com.br
+
+No DNS do dominio, crie o registro:
+Tipo: CNAME
+Nome: gestao
+Destino: SEU_USUARIO_GITHUB.github.io
+
+Depois ative Enforce HTTPS em Settings > Pages.
