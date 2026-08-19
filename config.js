@@ -4,15 +4,15 @@ window.AABB_CONFIG = Object.freeze({
   domain: "gestao.aabbvoleibol.com.br",
   institutionalEmail: "aabbvoleibolxinguara@gmail.com",
 
-  // Primeiro teste: deixe true. Depois de publicar o Apps Script,
-  // cole a URL abaixo e altere demoMode para false.
-  demoMode: true,
+  // Produção
+  demoMode: false,
+
+  // URL publicada do Google Apps Script
   apiUrl: "https://script.google.com/macros/s/AKfycbwaBB35vm_cwGZvhGMBnG-tmxCt4Ou-opBE1tcT3MspMpr_94vn52OWiR8P_XA5TsRw/exec",
 
   requestTimeoutMs: 35000,
   maxUploadMb: 4,
-  demoCredentials: {
-    email: "aabbvoleibolxinguara@gmail.com",
-    password: "Demo@2026"
-  }
+
+  // Credenciais de demonstração desativadas em produção
+  demoCredentials: null
 });
